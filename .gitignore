@@ -1,0 +1,59 @@
+# -------------------------------
+# Python / Backend
+# -------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+mp_env/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# -------------------------------
+# Node / Frontend (React + Vite)
+# -------------------------------
+node_modules/
+dist/
+build/
+
+# Vite cache
+.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -------------------------------
+# OS / System Files
+# -------------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------------
+# IDE / Editor
+# -------------------------------
+.vscode/
+.idea/
+
+# -------------------------------
+# Data / Temporary Files
+# -------------------------------
+data/raw/*
+!data/raw/adhd/
+!data/raw/autism/
+!data/raw/adhd/.gitkeep
+!data/raw/autism/.gitkeep
+
+# Optional (ignoring large dataset media locally preserving structures)
+*.csv
+*.mp4
+*.webm
