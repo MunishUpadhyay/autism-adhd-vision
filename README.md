@@ -87,8 +87,8 @@ autism-adhd-vision/
 
 ### Backend API Start:
 ```bash
-cd backend
-uvicorn main:app --reload
+# Run this from the root 'autism-adhd-vision' directory
+uvicorn backend.main:app --reload
 ```
 *(Server locks to port 8000 handling OpenCV matrices locally)*
 
