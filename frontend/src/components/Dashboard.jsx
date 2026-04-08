@@ -1,7 +1,7 @@
 import React from 'react';
 import ScoreCard from './ScoreCard';
 import IndicatorCard from './IndicatorCard';
-import { Activity, Eye, Brain, LineChart, Target, Focus, CheckCircle2 } from 'lucide-react';
+import { Activity, Eye, Brain, LineChart, Target, Focus, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 const Dashboard = ({ data }) => {
   if (!data) return null;
@@ -23,9 +23,17 @@ const Dashboard = ({ data }) => {
   const eyeContactScore = Math.max(1.0 - trackLoss, 0.0);
   const attentionScore = Math.max(1.0 - moveVar, 0.0);
   const engagementScore = (eyeContactScore + attentionScore) / 2;
+  const confidenceScore = data.confidence_score || 0.0;
+  const confidenceLabel = data.confidence_label || "Low Confidence";
 
   // Use raw movement_variance mapping explicitly into our Variability limit
   const baseMotor = data.motor_activity || 0;
+
+  const getConfidenceColor = (label) => {
+    if (label === 'High Confidence') return 'bg-emerald-500';
+    if (label === 'Moderate Confidence') return 'bg-yellow-500';
+    return 'bg-rose-500';
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in mt-4">
@@ -41,11 +49,28 @@ const Dashboard = ({ data }) => {
           <ScoreCard title="Attention Stability" value={attentionScore} color="bg-indigo-500" Icon={Brain} delayClass="delay-200" />
         </div>
 
-        {/* Row 2 (Derived Variables) */}
+        {/* Row 2 (Derived Variables + Confidence) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <ScoreCard title="Movement Variability" value={moveVar} color="bg-rose-500" Icon={LineChart} delayClass="delay-100" />
           <ScoreCard title="Gaze Stability" value={eyeContactScore} color="bg-emerald-500" Icon={Target} delayClass="delay-200" />
           <ScoreCard title="Engagement Level" value={engagementScore} color="bg-violet-500" Icon={Focus} delayClass="delay-300" />
+        </div>
+
+        {/* Row 3: Confidence Card */}
+        <div className="mt-6">
+          <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-3 animate-fade-in delay-300 opacity-0">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-slate-400" />
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Prediction Confidence</h3>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-3xl font-black text-slate-800">{(confidenceScore * 100).toFixed(0)}%</span>
+              <span className={`text-xs font-bold px-3 py-1 rounded-full text-white ${getConfidenceColor(confidenceLabel)}`}>{confidenceLabel}</span>
+            </div>
+            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden shadow-inner">
+              <div className={`h-full rounded-full transition-all duration-1000 ease-out ${getConfidenceColor(confidenceLabel)}`} style={{ width: `${(confidenceScore * 100).toFixed(0)}%` }} />
+            </div>
+          </div>
         </div>
       </div>
 
